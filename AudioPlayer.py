@@ -150,9 +150,8 @@ def mute_unmute():
 
 
 def about():
-
-    f = open("aboutMessege.txt")
-    showinfo(title='Audio Player', message=f.read())
+    showinfo(title='Audio Player',
+             message="This is the 'Audio Player' by creator 'Shubham Kumbhar'")
 
 
 menubar = Menu(root)
