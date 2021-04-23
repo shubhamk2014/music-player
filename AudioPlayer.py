@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Menu, Label, Button, Canvas, Frame, Scale, HORIZONTAL, TRUE, LEFT, BOTH, X
 from PIL import Image, ImageTk
 from tkinter.ttk import Progressbar
 from tkinter.messagebox import showinfo
@@ -10,8 +10,8 @@ from pygame import mixer
 mixer.init()
 root = Tk()
 root.title("Audio Player")
-root.geometry("500x400")
-root.minsize(500, 400)
+root.geometry("530x430")
+root.minsize(530, 430)
 
 
 # music loading and creating playlist
@@ -35,7 +35,7 @@ def openfile(event=None):
 def next():
     global current_fileInd, interpt
     current_fileInd = (current_fileInd - 1) % len(music_files)
-    print(music_files[current_fileInd])
+    # print(music_files[current_fileInd])
     mixer.music.load(music_files[current_fileInd])
     mixer.music.play()
     play_btn.config(text="Pause")
@@ -46,7 +46,7 @@ def next():
 def prev():
     global current_fileInd, interpt
     current_fileInd = (current_fileInd + 1) % len(music_files)
-    print(music_files[current_fileInd])
+    # print(music_files[current_fileInd])
     mixer.music.load(music_files[current_fileInd])
     mixer.music.play()
     play_btn.config(text="Pause")
@@ -75,6 +75,7 @@ def play():
     global interpt
     mixer.music.play()
     play_btn.config(text="Pause")
+
     interpt = 1
 
 
@@ -145,8 +146,25 @@ def volDown():
         scale.set(inp)
 
 
-def mute_unmute():
-    pass
+muted = 0
+
+
+def mute_unmute(event):
+    global muted, vol_image, path
+    if muted:
+        scale.set(80)
+        path = "imgs\\fVol.png"
+        vol_image = ImageTk.PhotoImage(Image.open(
+            path).resize((20, 20), Image.ANTIALIAS))
+        vol_btn.config(image=vol_image)
+        muted = 0
+    else:
+        scale.set(0)
+        path = "imgs\\mute.png"
+        vol_image = ImageTk.PhotoImage(Image.open(
+            path).resize((20, 20), Image.ANTIALIAS))
+        vol_btn.config(image=vol_image)
+        muted = 1
 
 
 def about():
@@ -206,7 +224,8 @@ frame1 = Frame(root, width=550, height=300)
 
 img = ImageTk.PhotoImage(Image.open(filename))
 Label(frame1, image=img).pack(expand=TRUE, fill=BOTH)
-
+Label(frame1, text="Playing song",
+      bg="gray", borderwidth=2, fg="white", font="lucida 10 bold").pack(ipadx=10, ipady=10)
 frame1.pack(expand=TRUE, fill=BOTH)
 
 # frame2 is for song progress bar
@@ -216,43 +235,44 @@ progressbar1 = Progressbar(
 frame2.pack(expand=TRUE, fill=X)
 
 # can_wid is for all btns
-can_wid = Canvas(frame2, width=550, height=37)
+can_wid = Canvas(frame2, width=550, height=37, bg="gray",
+                 borderwidth=5, relief="raised", highlightbackground="green")
 can_wid.pack()
 
 # rewind_btn replaying song
 rewind_btn = Button(can_wid, text="Rewind",
                     font="lucida 10 bold", bg="green", fg="white")
-rewind_btn.pack(side=LEFT, padx=5, pady=10)
+rewind_btn.pack(side=LEFT, padx=10, pady=10)
 
 # button for previous song
 prev_btn = Button(can_wid, text="<<", font="lucida 10 bold",
                   bg="green", fg="white", command=prev)
-prev_btn.pack(side=LEFT, padx=5, pady=10)
+prev_btn.pack(side=LEFT, padx=10, pady=10)
 
 # play btn
 play_btn = Button(can_wid, text="Play", font="lucida 13 bold",
                   bg="green", fg="white", command=play_pause)
-play_btn.pack(side=LEFT, ipadx=5, ipady=5, padx=5, pady=10)
+play_btn.pack(side=LEFT, ipadx=5, ipady=5, padx=10, pady=10)
 
 # button for next song
 Button(can_wid, text=">>", font="lucida 10 bold", bg="green", fg="white", command=next).pack(
-    side=LEFT, padx=5, pady=10)
+    side=LEFT, padx=10, pady=10)
 # shuffle_btn
 shuffle_btn = Button(can_wid, text="Shuffle",
                      font="lucida 10 bold", bg="green", fg="white")
-shuffle_btn.pack(side=LEFT, padx=5, pady=10)
+shuffle_btn.pack(side=LEFT, padx=10, pady=10)
 
 # volume button and condition for different volume
 vol_image = ImageTk.PhotoImage(Image.open(
     "imgs\\mute.png").resize((20, 20), Image.ANTIALIAS))
 vol_btn = Button(can_wid, text="vol_btn", image=vol_image, bg="green")
-vol_btn.pack(side=LEFT, padx=5)
+vol_btn.pack(side=LEFT, padx=10)
 vol_btn.bind("<Button-1>", mute_unmute)
 # volume progessbar
 
 scale = Scale(can_wid, from_=0, to=100,
               orient=HORIZONTAL, command=volume, bg="green", showvalue=0, width=10)
-scale.pack(side=LEFT)
-scale.set(25)
+scale.pack(side=LEFT, padx=10)
+scale.set(80)
 
 root.mainloop()
