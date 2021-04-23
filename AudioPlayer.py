@@ -4,10 +4,10 @@ from tkinter.ttk import Progressbar
 from tkinter.messagebox import showinfo
 from tkinter.filedialog import askopenfilenames
 import os
-import pygame
+from pygame import mixer
 
 # initialization of pygame
-pygame.mixer.init()
+mixer.init()
 root = Tk()
 root.title("Audio Player")
 root.geometry("500x400")
@@ -25,8 +25,8 @@ def openfile(event=None):
                                    ("alltyes", "*.*"), ("musicfiles", "*.mp3")])
     # print(music_files)
     current_fileInd = len(music_files)-1
-    pygame.mixer.music.load(music_files[current_fileInd])
-    pygame.mixer.music.play(loops=0)
+    mixer.music.load(music_files[current_fileInd])
+    mixer.music.play(loops=0)
     play_btn.config(text="Pause")
     interpt = 1
 
@@ -36,20 +36,19 @@ def next():
     global current_fileInd, interpt
     current_fileInd = (current_fileInd - 1) % len(music_files)
     print(music_files[current_fileInd])
-    pygame.mixer.music.load(music_files[current_fileInd])
-    pygame.mixer.music.play()
+    mixer.music.load(music_files[current_fileInd])
+    mixer.music.play()
     play_btn.config(text="Pause")
     interpt = 1
 
+
 # function for previous song
-
-
 def prev():
     global current_fileInd, interpt
     current_fileInd = (current_fileInd + 1) % len(music_files)
     print(music_files[current_fileInd])
-    pygame.mixer.music.load(music_files[current_fileInd])
-    pygame.mixer.music.play()
+    mixer.music.load(music_files[current_fileInd])
+    mixer.music.play()
     play_btn.config(text="Pause")
     interpt = 1
 
@@ -74,21 +73,21 @@ def play_pause():
 
 def play():
     global interpt
-    pygame.mixer.music.play()
+    mixer.music.play()
     play_btn.config(text="Pause")
     interpt = 1
 
 
 def pause():
     global interpt
-    pygame.mixer.music.pause()
+    mixer.music.pause()
     play_btn.config(text="Resume")
     interpt = 2
 
 
 def resume():
     global interpt
-    pygame.mixer.music.unpause()
+    mixer.music.unpause()
     play_btn.config(text="Pause")
     interpt = 1
 
@@ -106,7 +105,7 @@ def shuffle():
 
 def volume(vol):
     volum = int(vol)/100
-    pygame.mixer.music.set_volume(volum)
+    mixer.music.set_volume(volum)
     volum = volum*100
     set_img(volum)
 
