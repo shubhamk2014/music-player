@@ -206,7 +206,7 @@ filename = "imgs\\music.jpg"
 frame1 = Frame(root, width=550, height=300)
 
 img = ImageTk.PhotoImage(Image.open(filename))
-img_lbl = Label(frame1, image=img).pack(expand=TRUE, fill=BOTH)
+Label(frame1, image=img).pack(expand=TRUE, fill=BOTH)
 
 frame1.pack(expand=TRUE, fill=BOTH)
 
@@ -236,7 +236,7 @@ play_btn = Button(can_wid, text="Play", font="lucida 13 bold",
 play_btn.pack(side=LEFT, ipadx=5, ipady=5, padx=5, pady=10)
 
 # button for next song
-nxt_btn = Button(can_wid, text=">>", font="lucida 10 bold", bg="green", fg="white", command=next).pack(
+Button(can_wid, text=">>", font="lucida 10 bold", bg="green", fg="white", command=next).pack(
     side=LEFT, padx=5, pady=10)
 # shuffle_btn
 shuffle_btn = Button(can_wid, text="Shuffle",
