@@ -1,3 +1,0 @@
-This is the 'Audio Player' by creator 'Shubham Kumbhar'
-For more details contact -
-                url = "www.google.com"
