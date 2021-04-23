@@ -25,31 +25,29 @@ def openfile(event=None):
                                    ("alltyes", "*.*"), ("musicfiles", "*.mp3")])
     # print(music_files)
     current_fileInd = len(music_files)-1
-    # print(music_files[current_fileInd])
     pygame.mixer.music.load(music_files[current_fileInd])
     pygame.mixer.music.play(loops=0)
     play_btn.config(text="Pause")
     interpt = 1
 
 
+# function for next song
 def next():
     global current_fileInd, interpt
-    current_fileInd = current_fileInd - 1
-    # print(music_files[current_fileInd])
+    current_fileInd = (current_fileInd - 1) % len(music_files)
+    print(music_files[current_fileInd])
     pygame.mixer.music.load(music_files[current_fileInd])
     pygame.mixer.music.play()
     play_btn.config(text="Pause")
     interpt = 1
 
+# function for previous song
+
 
 def prev():
     global current_fileInd, interpt
-    try:
-        current_fileInd = current_fileInd + 1
-        # print(music_files[current_fileInd])
-    except Exception as e:
-        print(e)
-        pass
+    current_fileInd = (current_fileInd + 1) % len(music_files)
+    print(music_files[current_fileInd])
     pygame.mixer.music.load(music_files[current_fileInd])
     pygame.mixer.music.play()
     play_btn.config(text="Pause")
