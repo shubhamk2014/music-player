@@ -215,25 +215,33 @@ def about():
              message="This is the 'Audio Player' by creator 'Shubham Kumbhar'")
 
 
-# function for moving songProgress in case we want to forward the song
-def set_song_pos(pos):
-    slider_pos = pos.widget.get()
-    mixer.music.set_pos(slider_pos)
-
-
 # function for song lenth and song current position
+
+fastFwd = False
 
 
 def duration():
     # global declaration of variables we need in this function
-    global music_files, current_fileInd, current_pos
-    # get_pos returns time in millisec ,converting it to sec by dvidin with 1000
-    current_pos = mixer.music.get_pos()/1000
+    global music_files, current_fileInd, current_pos, fastFwd
+
+    if fastFwd:
+        # get_pos returns time in millisec ,converting it to sec by dvidin with 1000
+        current_pos = mixer.music.get_pos()/1000
+        # print(f"current={current_pos}")
+        fastFwd = True
+
+    else:
+        # in case we fast fwd the song then grabbing the new position of
+        # slider to update the dur_lbl and songProgress
+        slider_pos = songProgress.get()
+        next_pos = slider_pos
+        fastFwd = False
+
     # converting time in the sec into format %M:%S
-    converted_pos = strftime("%M:%S", gmtime(current_pos))
+    converted_pos = strftime("%M:%S", gmtime(next_pos))
     # updating label with converted time
     dur_lbl.config(text=converted_pos)
-    songProgress.set(current_pos)
+    songProgress.set(next_pos+1)
     # for getting the position of the song every sec run the function every sec
     dur_lbl.after(1000, duration)
 
@@ -246,7 +254,17 @@ def duration():
     # finally updating songlen_lbl
     songlen_lbl.config(text=converted_audio_len)
     songProgress.config(to=audio_len)
-    print(f"current={current_pos}")
+
+# function for moving songProgress in case we want to forward the song
+
+
+def set_song_pos(pos):
+    global current_pos
+    slider_pos = songProgress.get()
+    print(f"slider_pos= {slider_pos}")
+    current_pos = slider_pos
+
+    mixer.music.set_pos(current_pos)
 
 
 menubar = Menu(root)
