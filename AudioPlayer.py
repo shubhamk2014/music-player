@@ -15,7 +15,7 @@ root = Tk()
 root.title("Audio Player")
 root.geometry("530x430")
 root.minsize(530, 430)
-
+root.maxsize(530, 430)
 
 # music loading
 interpt = 0
