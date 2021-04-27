@@ -52,6 +52,8 @@ def next():
     mixer.music.load(music_files[current_fileInd])
     mixer.music.play()
     play_btn.config(text="Pause")
+    dur_lbl.config(text="00:00")
+    songProgress.set(0)
     interpt = 0
 
 
@@ -65,6 +67,8 @@ def prev():
     mixer.music.load(music_files[current_fileInd])
     mixer.music.play()
     play_btn.config(text="Pause")
+    dur_lbl.config(text="00:00")
+    songProgress.set(0)
     interpt = 1
 
 # assigning play and pause to funtionalities to same btn
@@ -92,6 +96,8 @@ def play():
     global interpt
     mixer.music.play()
     play_btn.config(text="Pause")
+    dur_lbl.config(text="00:00")
+    songProgress.set(0)
 
     interpt = 1
 
@@ -102,6 +108,7 @@ def pause():
     global interpt
     mixer.music.pause()
     play_btn.config(text="Resume")
+
     interpt = 2
 
 # function to resume music
@@ -131,6 +138,8 @@ def shuffle():
         audio_f = music_files[current_fileInd]
         mixer.music.load(audio_f)
         mixer.music.play()
+        dur_lbl.config(text="00:00")
+        songProgress.set(0)
     except Exception:
         pass
 
@@ -229,7 +238,6 @@ def duration():
         current_pos = mixer.music.get_pos()/1000
         # print(f"current={current_pos}")
         fastFwd = True
-
     else:
         # in case we fast fwd the song then grabbing the new position of
         # slider to update the dur_lbl and songProgress
@@ -240,8 +248,11 @@ def duration():
     # converting time in the sec into format %M:%S
     converted_pos = strftime("%M:%S", gmtime(next_pos))
     # updating label with converted time
-    dur_lbl.config(text=converted_pos)
-    songProgress.set(next_pos+1)
+    if interpt == 2:
+        pass
+    else:
+        dur_lbl.config(text=converted_pos)
+        songProgress.set(next_pos+1)
     # for getting the position of the song every sec run the function every sec
     dur_lbl.after(1000, duration)
 
@@ -261,7 +272,7 @@ def duration():
 def set_song_pos(pos):
     global current_pos
     slider_pos = songProgress.get()
-    print(f"slider_pos= {slider_pos}")
+    # print(f"slider_pos= {slider_pos}")
     current_pos = slider_pos
 
     mixer.music.set_pos(current_pos)
